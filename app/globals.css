@@ -19,6 +19,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+a,
+button {
+  -ms-touch-action: manipulation; /* IE10  */
+
+  touch-action: manipulation; /* IE11+ */
+}
+
 @utility flexc {
   @apply flex items-center justify-center;
 }

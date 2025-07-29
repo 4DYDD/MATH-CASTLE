@@ -3,6 +3,7 @@ import Logo from "./components/Logo";
 import TextType from "./components/TextType";
 import Squares from "./components/Squares";
 import ClickSpark from "./components/ClickSpark";
+import GameButton from "./components/GameButton";
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
           squareSize={20}
           direction="down" // up, down, left, right, diagonal
           borderColor="#545555"
-          hoverFillColor="#545555"
+          hoverFillColor="rgba(0,0,0,0.0)"
         />
 
         <div className="flexcc relative z-[2] !justify-start h-full p-5 w-full">
@@ -60,12 +61,18 @@ export default function Home() {
           </div>
 
           <div className="flexc space-x-5 text-xs">
-            <button className="bg-black/10 outline-[1px] text-white hover:bg-black/30 active:bg-black/100 hover:scale-105 active:scale-y-95 active:scale-x-110 transall select-none w-[120px] h-[35px] rounded">
+            <GameButton
+              goTo="/tutorial"
+              className={`bg-black/10 outline-[1px] text-white w-[120px] h-[35px]`}
+            >
               COBA TUTORIAL
-            </button>
-            <button className="bg-black/10 outline-[1px] text-yellow-400 hover:bg-black/30 active:bg-black/100 hover:scale-105 active:scale-y-95 active:scale-x-110 transall select-none w-[120px] h-[35px] rounded">
+            </GameButton>
+            <GameButton
+              goTo="/room"
+              className={`bg-black/10 outline-[1px] text-yellow-400 w-[120px] h-[35px]`}
+            >
               MULAI BERMAIN
-            </button>
+            </GameButton>
           </div>
         </div>
       </main>
