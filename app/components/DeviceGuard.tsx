@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDeviceDetection } from "../hooks/useDeviceDetection";
 import DeviceRestriction from "./DeviceRestriction";
 import DeviceDetectionLoading from "./DeviceDetectionLoading";
@@ -15,20 +15,33 @@ interface DeviceGuardProps {
  */
 const DeviceGuard: React.FC<DeviceGuardProps> = ({ children }) => {
   const { isLoading, isAllowed, deviceType } = useDeviceDetection();
+  const [showRestriction, setShowRestriction] = useState(false);
 
-  // Loading state
+  useEffect(() => {
+    if (!isLoading) {
+      const timeout = setTimeout(() => {
+        setShowRestriction(true);
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+    // Reset jika device berubah/allowed
+    setShowRestriction(false);
+  }, [isLoading]);
+
   if (isLoading) {
     return <DeviceDetectionLoading />;
   }
 
-  // Device tidak diizinkan (tablet/desktop)
   if (!isAllowed) {
+    if (!showRestriction) return <DeviceDetectionLoading />;
+
     return (
-      <DeviceRestriction deviceType={deviceType as "tablet" | "desktop"} />
+      <DeviceRestriction deviceType={deviceType as "laptop" | "desktop"} />
     );
   }
 
-  // Device mobile - izinkan akses
+  if (!showRestriction) return <DeviceDetectionLoading />;
+
   return <>{children}</>;
 };
 

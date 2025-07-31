@@ -7,7 +7,8 @@ export interface DeviceInfo {
   isMobile: boolean;
   isTablet: boolean;
   isDesktop: boolean;
-  deviceType: "mobile" | "tablet" | "desktop";
+  isLaptop: boolean; // Add isLaptop property
+  deviceType: "mobile" | "tablet" | "desktop" | "laptop"; // Include laptop as a valid type
   userAgent: string;
   screenSize: {
     width: number;
@@ -79,6 +80,7 @@ export const getDeviceInfo = (): DeviceInfo => {
       isMobile: false,
       isTablet: false,
       isDesktop: true,
+      isLaptop: false, // Default to false for server-side rendering
       deviceType: "desktop",
       userAgent: "",
       screenSize: { width: 0, height: 0 },
@@ -92,26 +94,25 @@ export const getDeviceInfo = (): DeviceInfo => {
 
   const { innerWidth, innerHeight } = window;
 
-  // Triple detection validation
   const mobileScore = [isMobileUA, isMobileScreen, hasTouch].filter(
     Boolean
   ).length;
-  const isMobile = mobileScore >= 2; // Minimal 2 dari 3 criteria harus terpenuhi
+  const isMobile = mobileScore >= 2;
 
-  // Tablet detection (touch + larger screen)
-  const isTablet = hasTouch && innerWidth > 768 && innerWidth <= 1024;
+  const isTablet = hasTouch && innerWidth > 768 && innerWidth <= 1024; // Ensure tablet detection is accurate
+  const isLaptop = !hasTouch && innerWidth > 1024 && innerWidth <= 1440; // Add laptop detection logic
+  const isDesktop = !isMobile && !isTablet && !isLaptop;
 
-  // Desktop detection
-  const isDesktop = !isMobile && !isTablet;
-
-  let deviceType: "mobile" | "tablet" | "desktop" = "desktop";
+  let deviceType: "mobile" | "tablet" | "desktop" | "laptop" = "desktop"; // Add laptop as a valid type
   if (isMobile) deviceType = "mobile";
   else if (isTablet) deviceType = "tablet";
+  else if (isLaptop) deviceType = "laptop"; // Assign laptop type
 
   return {
     isMobile,
     isTablet,
     isDesktop,
+    isLaptop,
     deviceType,
     userAgent: navigator.userAgent,
     screenSize: { width: innerWidth, height: innerHeight },
@@ -125,5 +126,5 @@ export const getDeviceInfo = (): DeviceInfo => {
  */
 export const isDeviceAllowed = (): boolean => {
   const deviceInfo = getDeviceInfo();
-  return deviceInfo.isMobile;
+  return deviceInfo.isMobile || deviceInfo.isTablet; // Allow both mobile and tablet devices
 };

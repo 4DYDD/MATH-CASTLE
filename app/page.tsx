@@ -3,7 +3,7 @@ import Logo from "./components/Logo";
 import TextType from "./components/TextType";
 import Squares from "./components/Squares";
 import ClickSpark from "./components/ClickSpark";
-import GameButton from "./components/GameButton";
+import LPButtonSection from "./components/LPButtonSection";
 
 export default function Home() {
   return (
@@ -20,7 +20,7 @@ export default function Home() {
           speed={1.5}
           squareSize={20}
           direction="down" // up, down, left, right, diagonal
-          borderColor="#545555"
+          borderColor="rgba(43,43,43,0.2)"
           hoverFillColor="rgba(0,0,0,0.0)"
         />
 
@@ -37,7 +37,7 @@ export default function Home() {
             />
           </div>
 
-          <div className="w-full text-center text-[12px] mb-3.5">
+          <div className="w-full text-center text-[14px] mb-4">
             <div className="flexc w-full space-x-1.5">
               <span className="">MATEMATIKA ILMU YANG</span>
               <TextType
@@ -52,28 +52,19 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="text-center uppercase text-[10px] !text-secondary mb-8">
-            <p className="px-7">
-              Jawab soal matematika, rebut petak, dan bangun kastilmu! Tantang
-              pemain lain dalam pertempuran 10 menit yang seru dan penuh
-              strategi!
-            </p>
+          <div className="text-left text-[12px] !text-secondary mb-8">
+            <ul className="px-10 list-disc list-outside">
+              <li className="mb-1.5 ps-1">
+                Jawab soal matematika, rebut petak, dan bangun kastilmu!
+              </li>
+              <li className="ps-1">
+                Tantang pemain lain dalam pertempuran 10 menit yang seru dan
+                penuh strategi !
+              </li>
+            </ul>
           </div>
 
-          <div className="flexc space-x-5 text-xs">
-            <GameButton
-              goTo="/tutorial"
-              className={`bg-black/10 outline-[1px] text-white w-[120px] h-[35px]`}
-            >
-              COBA TUTORIAL
-            </GameButton>
-            <GameButton
-              goTo="/room"
-              className={`bg-black/10 outline-[1px] text-yellow-400 w-[120px] h-[35px]`}
-            >
-              MULAI BERMAIN
-            </GameButton>
-          </div>
+          <LPButtonSection />
         </div>
       </main>
     </ClickSpark>

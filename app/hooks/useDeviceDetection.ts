@@ -39,6 +39,7 @@ export const useDeviceDetection = () => {
     isMobile: deviceInfo?.isMobile || false,
     isTablet: deviceInfo?.isTablet || false,
     isDesktop: deviceInfo?.isDesktop || false,
+    isLaptop: deviceInfo?.isLaptop || false, // Add isLaptop detection
     deviceType: deviceInfo?.deviceType || "desktop",
   };
 };

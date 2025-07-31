@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useCallback } from "react";
+import { useDeviceDetection } from "../hooks/useDeviceDetection";
 
 interface ClickSparkProps {
   sparkColor?: string;
@@ -30,6 +31,8 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
   extraScale = 1.0,
   children,
 }) => {
+  const { isAllowed } = useDeviceDetection();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sparksRef = useRef<Spark[]>([]);
   const startTimeRef = useRef<number | null>(null);
@@ -160,8 +163,33 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
     sparksRef.current.push(...newSparks);
   };
 
+  const handleOnTouchStart = (e: React.TouchEvent<HTMLDivElement>): void => {
+    if (!isAllowed) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.changedTouches[0].clientX - rect.left;
+    const y = e.changedTouches[0].clientY - rect.top;
+
+    const now = performance.now();
+    const newSparks: Spark[] = Array.from({ length: sparkCount }, (_, i) => ({
+      x,
+      y,
+      angle: (2 * Math.PI * i) / sparkCount,
+      startTime: now,
+    }));
+
+    sparksRef.current.push(...newSparks);
+  };
+
   return (
-    <div className="relative w-full h-full z-[3]" onClick={handleClick}>
+    <div
+      className="relative w-full h-full z-[3]"
+      onClick={!isAllowed ? handleClick : undefined}
+      onTouchStart={isAllowed ? handleOnTouchStart : undefined}
+      // onTouchEnd={isAllowed ? handleOnTouchEnd : undefined}
+    >
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none"

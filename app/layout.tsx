@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import { Lilita_One } from "next/font/google";
 import "./globals.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
 const lilitaOne = Lilita_One({
   variable: "--font-lilita-one",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400"],
 });
+
+config.autoAddCss = false;
 
 export const metadata: Metadata = {
   title: "Math Castle - Game Matematika Multiplayer Indonesia",
@@ -54,12 +58,13 @@ export default function RootLayout({
       <head>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
         />
       </head>
 
       <body
-        className={`${lilitaOne.className} antialiased h-[100vh] overflow-hidden !bg-gradient-to-b from-[#9b9a9a] to-[#2b2b2b]`}
+        className={`${lilitaOne.className} antialiased h-screen overflow-hidden !bg-gradient-to-b from-top to-bottom`}
+        style={{ touchAction: "none" }} // Prevent double-tap zoom
       >
         {children}
       </body>

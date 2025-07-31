@@ -8,7 +8,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-secondary: #d9d9d9;
+  --color-secondary: rgb(217, 217, 217);
+  --color-top: rgb(155, 154, 154);
+  --color-top__darker: rgb(122, 122, 122);
+  --color-bottom: rgb(43, 43, 43);
+  --color-bottom__darker: rgb(28, 28, 28);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -37,4 +41,34 @@ button {
 }
 @utility transcenter {
   @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@utility animate-pulseku {
+  animation: pulseku 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@utility animate-pulseku-bounce {
+  animation: pulseku-bounce 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseku {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes pulseku-bounce {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.01);
+  }
 }
