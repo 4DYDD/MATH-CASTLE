@@ -12,6 +12,7 @@ interface ClickSparkProps {
   easing?: "linear" | "ease-in" | "ease-out" | "ease-in-out";
   extraScale?: number;
   children?: React.ReactNode;
+  className?: string;
 }
 
 interface Spark {
@@ -30,6 +31,7 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
   easing = "ease-out",
   extraScale = 1.0,
   children,
+  className = "",
 }) => {
   const { isAllowed } = useDeviceDetection();
 
@@ -185,7 +187,7 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
 
   return (
     <div
-      className="relative w-full h-full z-[3]"
+      className={`relative w-full h-full z-[3] ${className}`}
       onClick={!isAllowed ? handleClick : undefined}
       onTouchStart={isAllowed ? handleOnTouchStart : undefined}
       // onTouchEnd={isAllowed ? handleOnTouchEnd : undefined}

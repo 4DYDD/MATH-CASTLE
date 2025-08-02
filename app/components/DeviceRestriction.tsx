@@ -2,9 +2,10 @@ import React from "react";
 import Logo from "./Logo";
 // import { RotateLoader } from "react-spinners";
 import BounceIn from "./BounceIn";
+import { DeviceType } from "../utils/deviceDetection";
 
 interface DeviceRestrictionProps {
-  deviceType: "laptop" | "desktop";
+  deviceType: DeviceType;
 }
 
 /**

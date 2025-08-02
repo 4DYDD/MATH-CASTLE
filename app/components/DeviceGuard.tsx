@@ -35,9 +35,7 @@ const DeviceGuard: React.FC<DeviceGuardProps> = ({ children }) => {
   if (!isAllowed) {
     if (!showRestriction) return <DeviceDetectionLoading />;
 
-    return (
-      <DeviceRestriction deviceType={deviceType as "laptop" | "desktop"} />
-    );
+    return <DeviceRestriction deviceType={deviceType} />;
   }
 
   if (!showRestriction) return <DeviceDetectionLoading />;
