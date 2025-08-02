@@ -2,9 +2,9 @@ import DeviceGuard from "../components/DeviceGuard";
 import Squares from "../components/Squares";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faHome } from "@fortawesome/free-solid-svg-icons";
-import Menubar from "./Menubar/page";
-import Info from "./Info/page";
-import Options from "./Options/page";
+import Menubar from "./Menubar";
+import Info from "./Info";
+import Options from "./Options";
 import ClickSpark from "../components/ClickSpark";
 
 export default function RoomPage() {
