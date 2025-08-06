@@ -16,7 +16,7 @@ const DeviceRestriction: React.FC<DeviceRestrictionProps> = ({
   deviceType,
 }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flexcc p-6">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flexcc p-6">
       <BounceIn>
         <div className="max-w-md w-full text-center space-y-6">
           {/* Logo */}

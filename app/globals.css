@@ -23,6 +23,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* html,div {
+  border: red 1px solid !important;
+} */
+
 a,
 button {
   -ms-touch-action: manipulation; /* IE10  */
@@ -71,4 +75,40 @@ button {
     opacity: 0.7;
     transform: scale(1.01);
   }
+}
+
+/* Custom Scrollbar - Always Visible */
+.scrollbar-visible {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
+}
+
+.scrollbar-visible::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Force scrollbar to always show on Webkit browsers */
+.scrollbar-visible::-webkit-scrollbar-thumb {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.scrollbar-visible::-webkit-scrollbar-track {
+  visibility: visible !important;
+  opacity: 1 !important;
 }

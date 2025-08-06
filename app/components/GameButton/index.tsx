@@ -111,9 +111,9 @@ const GameButton = ({
     >
       {isLoading ? (
         <>
-          <span className="text-[10px]">
-            <span>PLEASE WAIT...</span>
-            <span className="ms-1 text-[10px] animate-spin relative inline-block">
+          <span className="text-[1em] w-full h-full flexc">
+            <span className="text-[0.9em]">PLEASE WAIT...</span>
+            <span className="ms-1 text-[0.8em] animate-spin relative inline-block">
               <FontAwesomeIcon icon={faHourglass} />
             </span>
           </span>

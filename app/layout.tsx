@@ -63,7 +63,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${lilitaOne.className} antialiased h-screen overflow-hidden !bg-gradient-to-b from-top to-bottom`}
+        className={`${lilitaOne.className} antialiased h-[100dvh] overflow-hidden !bg-bottom/85`}
         style={{ touchAction: "none" }} // Prevent double-tap zoom
       >
         {children}

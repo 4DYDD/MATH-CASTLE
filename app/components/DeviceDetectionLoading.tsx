@@ -6,7 +6,7 @@ import { RotateLoader } from "react-spinners";
 import Blurred from "./Blurred";
 
 /**
- * Loading screen saat device detection sedang berjalan
+ * Loading [100dvh] saat device detection sedang berjalan
  */
 const DeviceDetectionLoading: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +16,7 @@ const DeviceDetectionLoading: React.FC = () => {
   }, [isLoading]);
 
   return (
-    <div className="min-h-screen !bg-gradient-to-b from-top__darker to-bottom__darker">
+    <div className="min-h-[100dvh] !bg-gradient-to-b from-top__darker to-bottom__darker">
       <div className="text-center transcenter">
         {/* Logo */}
         <div className="flexcc mb-8">

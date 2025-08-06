@@ -15,7 +15,7 @@ export default function TutorialPage() {
         hoverFillColor="rgba(0,0,0,0.0)"
       />
 
-      <div className="min-h-screen flexcc p-4 z-[2] relative !bg-gradient-to-b from-top/50 to-bottom/50">
+      <div className="min-h-[100dvh] flexcc p-4 z-[2] relative">
         <BounceIn>
           <div className="text-center">
             <h1 className="text-2xl text-white mb-4">

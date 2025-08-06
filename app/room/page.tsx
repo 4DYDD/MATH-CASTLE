@@ -3,8 +3,8 @@ import Squares from "../components/Squares";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faHome } from "@fortawesome/free-solid-svg-icons";
 import Menubar from "./Menubar";
+import Leaderboard from "./Leaderboard";
 import Info from "./Info";
-import Options from "./Options";
 import ClickSpark from "../components/ClickSpark";
 
 export default function RoomPage() {
@@ -27,10 +27,10 @@ export default function RoomPage() {
           hoverFillColor="rgba(0,0,0,0.0)"
         />
 
-        <main className="h-screen pb-12 pt-2.5 flexcc !justify-end z-[2] relative !bg-gradient-to-b from-top/50 to-bottom/50">
-          <div className="w-full flex-[4.5] flexcc">
+        <main className="h-[100dvh] flexcc !justify-end z-[2] relative">
+          <div className="w-full flex-[4.5] overflow-y-scroll flexcc space-y-2 !justify-start scrollbar-visible">
             <Info />
-            <Options />
+            <Leaderboard />
           </div>
 
           {/* Menubar */}
