@@ -8,13 +8,13 @@ import {
   faGlobe, // Ganti ikon di sini
 } from "@fortawesome/free-solid-svg-icons";
 import ClickSpark from "@/app/components/ClickSpark";
-import MBButtonSection from "./MBButtonSection";
+import GBButtonSection from "./GBButtonSection";
 
-interface MenubarProps {
+interface GamebarProps {
   className?: string;
 }
 
-const Menubar = ({ className }: MenubarProps) => {
+const Gamebar = ({ className }: GamebarProps) => {
   const { isMobile, isTablet } = useDeviceDetection();
 
   return (
@@ -43,7 +43,7 @@ const Menubar = ({ className }: MenubarProps) => {
                   },
                   { icon: faGlobe, label: "Homepage", goTo: "/" }, // Ikon dan label diganti di sini
                 ].map((item, index) => (
-                  <MBButtonSection key={index} item={item} />
+                  <GBButtonSection key={index} item={item} />
                 ))}
               </div>
             </ClickSpark>
@@ -52,7 +52,7 @@ const Menubar = ({ className }: MenubarProps) => {
 
         {!isMobile && !isTablet && (
           <>
-            <p>Desktop Menubar</p>
+            <p>Desktop Gamebar</p>
           </>
         )}
       </div>
@@ -60,4 +60,4 @@ const Menubar = ({ className }: MenubarProps) => {
   );
 };
 
-export default Menubar;
+export default Gamebar;
