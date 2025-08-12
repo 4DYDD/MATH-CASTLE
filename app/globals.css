@@ -40,11 +40,17 @@ button {
 @utility flexcc {
   @apply flex flex-col items-center justify-center;
 }
+@utility clicked {
+  @apply cursor-pointer active:scale-95 hover:scale-105;
+}
 @utility transall {
   @apply transition-all duration-100 ease-in-out;
 }
 @utility transcenter {
   @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+@utility atranscenter {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
 
 @utility animate-pulseku {
