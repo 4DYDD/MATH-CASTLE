@@ -1,10 +1,19 @@
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Timer, Sword } from "lucide-react";
 import GameLayout from "../../../components/GameLayout";
 import Image from "next/image";
-import GameButton from "@/app/components/GameButton";
 import ClickSpark from "@/app/components/ClickSpark";
+import {
+  faFlag,
+  faFaceSmile,
+  faPause,
+  faPlay,
+} from "@fortawesome/free-solid-svg-icons";
+import Gamebar from "../Gamebar";
+import GameBoard from "../GameBoard";
+import { useGameplayStore } from "@/app/stores/gameplayStore";
+import PauseBanner from "../PauseBanner";
 
 const Classic = () => {
   // Role visual mapping (3 roles only)
@@ -16,90 +25,103 @@ const Classic = () => {
 
   type RoleKey = keyof typeof roleVisual;
 
-  interface CellData {
-    role: RoleKey;
-    owner: number; // player id
-  }
-
-  const [gameBoard] = useState<(CellData | null)[][]>(() => {
-    return Array.from({ length: 6 }, () =>
-      Array.from({ length: 6 }, () => null)
-    );
-  });
+  // Board state (placeholder empty 6x6)
+  const [gameBoard] = useState<(null | { role: RoleKey; owner: number })[][]>(
+    () => Array.from({ length: 6 }, () => Array.from({ length: 6 }, () => null))
+  );
 
   const [selectedCell, setSelectedCell] = useState<{
     row: number;
     col: number;
   } | null>(null);
-  const [timeRemaining] = useState<number>(600); // 10 menit (placeholder)
+  // Global gameplay store hooks
+  const isPaused = useGameplayStore((s) => s.isPaused);
+  const togglePause = useGameplayStore((s) => s.togglePause);
+  const isPauseSyncing = useGameplayStore((s) => s.isPauseSyncing);
+  const startMatch = useGameplayStore((s) => s.startMatch);
+  const getMatchRemainingMs = useGameplayStore((s) => s.getMatchRemainingMs);
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
+  // Force re-render tiap detik agar countdown tampil (store hitung berbasis Date.now)
+  const [, force] = useState(0);
+  // Jalankan startMatch sekali saat mount untuk menghindari loop update.
+  const startedRef = useRef(false);
+  useEffect(() => {
+    if (!startedRef.current) {
+      startMatch();
+      startedRef.current = true;
+    }
+    const id = setInterval(() => force((v) => (v + 1) % 1000000), 1000);
+    return () => clearInterval(id);
+  }, [startMatch]);
+
+  // Format match timer
+  const formatTime = (ms: number) => {
+    const totalSeconds = Math.ceil(ms / 1000);
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
     return `${mins.toString().padStart(2, "0")}:${secs
       .toString()
       .padStart(2, "0")}`;
   };
 
-  const handleCellClick = (row: number, col: number) => {
-    if (!gameBoard[row][col]) {
-      setSelectedCell({ row, col });
-    } else {
-      // Toggle select if already occupied (optional behavior)
-      setSelectedCell({ row, col });
-    }
+  const matchRemainingMs = getMatchRemainingMs();
+
+  // Handle select cell (future: open level menu / validate ownership etc)
+  const handleSelectCell = (row: number, col: number) => {
+    setSelectedCell({ row, col });
   };
 
+  // Clear selection when clicking outside board
   const clearSelection = useCallback(() => {
     if (selectedCell) setSelectedCell(null);
   }, [selectedCell]);
 
-  const renderCell = (row: number, col: number) => {
-    const cell = gameBoard[row][col];
-    const isSelected = selectedCell?.row === row && selectedCell?.col === col;
-    return (
-      <GameButton
-        key={`${row}-${col}`}
-        className={`aspect-square w-full border border-slate-600/30 cursor-pointer flex items-center justify-center text-base sm:text-lg font-semibold select-none
-        bg-gradient-to-b from-[#1f1f1f] to-[#141414]
-        hover:from-[#252525] hover:to-[#181818] hover:border-yellow-400/60
-        ${isSelected ? "border-yellow-400 ring-2 ring-yellow-400/100" : ""}`}
-        onTouch={(e) => {
-          e.stopPropagation();
-          handleCellClick(row, col);
-        }}
-        // onClick={(e) => {
-        //   e.stopPropagation();
-        //   handleCellClick(row, col);
-        // }}
-      >
-        {cell && (
-          <div className="flex flex-col items-center gap-0.5">
-            <span className="text-sm sm:text-base">
-              {roleVisual[cell.role].icon}
-            </span>
-            <div
-              className={`w-1.5 h-1.5 rounded-full ${
-                cell.owner === 1
-                  ? "bg-blue-500"
-                  : cell.owner === 2
-                  ? "bg-red-500"
-                  : cell.owner === 3
-                  ? "bg-green-500"
-                  : "bg-yellow-400"
-              }`}
-            />
-          </div>
-        )}
-      </GameButton>
-    );
-  };
+  // Gamebar action buttons (console only for now)
+  const gamebarItems = [
+    {
+      icon: faFlag,
+      label: "Surrender",
+      className:
+        "bg-black/20 border border-red-500/60 rounded-md shadow-inner shadow-red-900/40",
+      onTouch: () => {
+        console.log("SURRENDER_CLICK");
+      },
+    },
+    {
+      icon: faFaceSmile,
+      label: "Emote",
+      className:
+        "bg-black/20 border border-amber-500/60 rounded-md shadow-inner shadow-amber-900/40",
+      onTouch: () => {
+        console.log("EMOTE_CLICK");
+      },
+    },
+    {
+      icon: isPaused ? faPlay : faPause,
+      label: isPauseSyncing ? "Sync..." : isPaused ? "Resume" : "Pause",
+      className: `${
+        isPaused
+          ? "bg-black/20 border border-green-500/60"
+          : "bg-black/20 border border-slate-500/60"
+      } rounded-md shadow-inner shadow-black/40 ${
+        isPauseSyncing ? "opacity-50" : ""
+      }`,
+      onTouch: () => {
+        if (isPauseSyncing) return;
+        console.log(isPaused ? "RESUME_CLICK" : "PAUSE_CLICK");
+        togglePause();
+      },
+    },
+  ];
 
   return (
     <GameLayout
       contentScrollable={false}
       contentWrapperClassName="bg-[#0e0e0e] p-4"
+      customMenubar={<Gamebar items={gamebarItems} />}
     >
+      <PauseBanner />
+
       <div onClick={clearSelection} className="w-full max-w-5xl mx-auto">
         {/* Header */}
         <div className="rounded-xl p-3 mb-2 border border-slate-700/60 bg-gradient-to-b from-[#1c1c1c] to-[#121212] shadow-[0_4px_12px_-2px_rgba(0,0,0,0.4)]">
@@ -111,7 +133,7 @@ const Classic = () => {
                     width={120}
                     height={120}
                     alt="Your Enemy"
-                    src="/image/memberi-laiks.jpg"
+                    src="/images/memberi-laiks.jpg"
                     className="w-full object-cover atranscenter"
                   />
                   <span className="relative z-[2] w-full bg-top__darker text-center text-sm p-1 -bottom-52 group-hover:bottom-0 transall !duration-300">
@@ -125,7 +147,7 @@ const Classic = () => {
 
                 <div className="flexcc space-y-0">
                   <span className="text-xl font-mono font-semibold text-white">
-                    {formatTime(timeRemaining)}
+                    {formatTime(matchRemainingMs)}
                   </span>
                   <p className="text-[11px] uppercase tracking-wide text-slate-500">
                     Match Timer
@@ -138,7 +160,7 @@ const Classic = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 relative z-[1]">
           {/* Board Section */}
           <ClickSpark
             sparkColor="yellow"
@@ -162,11 +184,12 @@ const Classic = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-6 gap-[5px] my-5 w-[85%] max-w-md mx-auto select-none">
-                  {Array.from({ length: 6 }).map((_, r) =>
-                    Array.from({ length: 6 }).map((_, c) => renderCell(r, c))
-                  )}
-                </div>
+                <GameBoard
+                  board={gameBoard}
+                  roleVisual={roleVisual}
+                  selectedCell={selectedCell}
+                  onSelectCell={handleSelectCell}
+                />
 
                 <div className="flexc !justify-end gap-2">
                   <div className="px-2 py-1.5 rounded-md bg-[#222] border border-slate-600/70 text-[11px] tracking-wide text-slate-300 flex items-center gap-2">

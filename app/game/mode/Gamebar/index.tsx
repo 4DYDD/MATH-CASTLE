@@ -2,19 +2,24 @@
 
 import { useDeviceDetection } from "@/app/hooks/useDeviceDetection";
 import React from "react";
-import {
-  faChessBoard,
-  faFlagCheckered,
-  faGlobe, // Ganti ikon di sini
-} from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import ClickSpark from "@/app/components/ClickSpark";
 import GBButtonSection from "./GBButtonSection";
 
-interface GamebarProps {
+interface GamebarItem {
+  icon: IconProp;
+  label: string;
+  goTo?: string;
+  onTouch?: (e: React.TouchEvent<HTMLButtonElement>) => void;
   className?: string;
 }
 
-const Gamebar = ({ className }: GamebarProps) => {
+interface GamebarProps {
+  className?: string;
+  items: GamebarItem[]; // required
+}
+
+const Gamebar = ({ className, items }: GamebarProps) => {
   const { isMobile, isTablet } = useDeviceDetection();
 
   return (
@@ -34,15 +39,7 @@ const Gamebar = ({ className }: GamebarProps) => {
               className="flexc px-2.5 pb-4"
             >
               <div className="flexc !justify-evenly w-full h-[70px]">
-                {[
-                  { icon: faFlagCheckered, label: "Ranked Mode" },
-                  {
-                    icon: faChessBoard,
-                    label: "Classic Mode",
-                    goTo: "/game/mode/Classic",
-                  },
-                  { icon: faGlobe, label: "Homepage", goTo: "/" }, // Ikon dan label diganti di sini
-                ].map((item, index) => (
+                {items.map((item, index) => (
                   <GBButtonSection key={index} item={item} />
                 ))}
               </div>

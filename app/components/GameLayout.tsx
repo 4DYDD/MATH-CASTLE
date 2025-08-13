@@ -21,6 +21,7 @@ interface GameLayoutProps {
   showMenubar?: boolean;
   enableSpark?: boolean;
   squaresConfig?: SquaresConfig;
+  customMenubar?: ReactNode; // Override default Menubar when provided
 }
 
 const GameLayout: React.FC<GameLayoutProps> = ({
@@ -30,6 +31,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({
   showMenubar = true,
   enableSpark = true,
   squaresConfig = {},
+  customMenubar,
 }) => {
   const squaresProps: SquaresConfig = {
     speed: 1.5,
@@ -41,7 +43,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({
   };
 
   const contentClasses = [
-    "w-full flex-[4.5] flexcc !justify-start",
+    "w-full flex-[4.5] flexcc !justify-start relative",
     contentScrollable
       ? "overflow-y-scroll scrollbar-visible"
       : "overflow-hidden",
@@ -53,7 +55,7 @@ const GameLayout: React.FC<GameLayoutProps> = ({
   const Core = (
     <main className="h-[100dvh] flexcc !justify-end z-[2] relative">
       <div className={contentClasses}>{children}</div>
-      {showMenubar && <Menubar />}
+      {showMenubar && (customMenubar ? customMenubar : <Menubar />)}
     </main>
   );
 

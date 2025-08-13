@@ -30,7 +30,7 @@ export default function Home() {
           <div className="size-[300px] overflow-hidden rounded-xl shadow mb-5 select-none relative">
             <Image
               alt="Math Castle Logo"
-              src="/image/istockfoto1.png"
+              src="/images/istockfoto1.png"
               width={1300}
               height={1300}
               className="w-full h-full object-cover select-none"

@@ -187,7 +187,7 @@ const ClickSpark: React.FC<ClickSparkProps> = ({
 
   return (
     <div
-      className={`relative w-full h-full z-[3] ${className}`}
+      className={`relative w-full h-full z-[4] ${className}`}
       onClick={!isAllowed ? handleClick : undefined}
       onTouchStart={isAllowed ? handleOnTouchStart : undefined}
       // onTouchEnd={isAllowed ? handleOnTouchEnd : undefined}
